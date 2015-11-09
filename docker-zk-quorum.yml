@@ -1,0 +1,30 @@
+--- 
+zk1: 
+  image: sauverma/zkquorum:latest
+  ports:
+    - "2181:2181"
+    - "2888:2888"
+    - "3888:3888"
+  hostname: zk1
+  environment: 
+    - myid=1
+
+zk2:
+  image: sauverma/zkquorum:latest
+  ports:
+    - "12181:2181"
+    - "12888:2888"
+    - "13888:3888"
+  hostname: zk2
+  environment:
+    - myid=2
+
+zk3:
+  image: sauverma/zkquorum:latest
+  ports:
+    - "22181:2181"
+    - "22888:2888"
+    - "23888:3888"
+  hostname: zk3
+  environment:
+    - myid=3
