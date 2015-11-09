@@ -21,7 +21,8 @@ RUN sed -i '/tickTime=/c\tickTime='$tickTime'' /opt/zookeeper/conf/zoo.cfg
 RUN echo server.1=${server1} >> /opt/zookeeper/conf/zoo.cfg
 RUN echo server.2=${server2} >> /opt/zookeeper/conf/zoo.cfg
 RUN echo server.3=${server3} >> /opt/zookeeper/conf/zoo.cfg
-RUN echo ${myid} > /tmp/zookeeper/myid
+RUN echo "echo \${myid} > /tmp/zookeeper/myid" >> ~/.bashrc
+RUN echo 1 > /tmp/zookeeper/myid
 
 EXPOSE 2181 2888 3888
 
