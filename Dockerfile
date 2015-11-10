@@ -1,5 +1,7 @@
 # DOCKER-VERSION 1.9.0
 
+# run as docker -e "myid=<myid>" -d sauverma/zkquorum
+
 FROM ubuntu
 MAINTAINER saurabh.verma@zeotap.com
 
@@ -13,20 +15,20 @@ RUN wget -q -O - http://apache.mirrors.pair.com/zookeeper/zookeeper-3.4.6/zookee
 ENV TERM dumb
 ENV JAVA_HOME /usr/lib/jvm/java-7-openjdk-amd64
 ENV tickTime 5000
-ENV server1	zk1:2888:3888
-ENV server2 zk2:2888:3888
-ENV server3 zk3:2888:3888
+ENV server1 zookeeper_zk1_1:2888:3888
+ENV server2 zookeeper_zk2_1:2888:3888
+ENV server3 zookeeper_zk3_1:2888:3888
 
 RUN sed -i '/tickTime=/c\tickTime='$tickTime'' /opt/zookeeper/conf/zoo.cfg
 RUN echo server.1=${server1} >> /opt/zookeeper/conf/zoo.cfg
 RUN echo server.2=${server2} >> /opt/zookeeper/conf/zoo.cfg
 RUN echo server.3=${server3} >> /opt/zookeeper/conf/zoo.cfg
-RUN echo "echo \${myid} > /tmp/zookeeper/myid" >> ~/.bashrc
-RUN echo 1 > /tmp/zookeeper/myid
 
 EXPOSE 2181 2888 3888
 
 WORKDIR /opt/zookeeper
 
-ENTRYPOINT ["/opt/zookeeper/bin/zkServer.sh"]
-CMD ["start-foreground"]
+ADD init.sh /opt/zookeeper/bin/init.sh
+RUN chmod 777 /opt/zookeeper/bin/init.sh
+
+CMD /opt/zookeeper/bin/init.sh
